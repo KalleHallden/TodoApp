@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'UI/Intray/intray_page.dart';
 import 'models/global.dart';
 
 void main() => runApp(MyApp());
@@ -27,7 +28,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -40,9 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: <Widget>[ 
                   TabBarView(
                   children: [
-                    new Container(
-                      color: darkGreyColor,
-                    ),
+                    IntrayPage(),
                     new Container(color: Colors.orange,),
                     new Container(
                       color: Colors.lightGreen,
