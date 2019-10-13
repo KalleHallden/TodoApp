@@ -7,7 +7,6 @@ from flask_sqlalchemy import SQLAlchemy
 ma = Marshmallow()
 db = SQLAlchemy()
 
-
 class User(db.Model):
     __tablename__ = 'users'
 
@@ -40,3 +39,37 @@ class User(db.Model):
             'password' : self.password,
             'emailadress' : self.emailadress,
         }
+
+class Task(db.Model):
+    __tablename__ = 'tasks'
+
+    id = db.Column(db.Integer(), primary_key=True)
+    user_id = db.Column(db.Integer(), db.ForeignKey('users.id'))
+    note = db.Column(db.String())
+    completed = db.Column(db.Boolean(), default=False, nullable=False)
+    repeats = db.Column(db.String())
+    deadline = db.Column(db.String())
+    reminders = db.Column(db.String())
+
+    def __init__(self, user_id, note, completed, repeats, deadline, reminders):
+        self.user_id = user_id
+        self.deadline = deadline
+        self.reminders = reminders
+        self.completed = completed
+        self.note = note
+        self.repeats = repeats
+
+    def __repr__(self):
+        return '<id {}>'.format(self.id)
+
+    def serialize(self):
+        return {
+            'user_id' : self.user_id,
+            'id' : self.id,
+            'repeats' : self.repeats,
+            'deadline' : self.deadline,
+            'reminders' : self.reminders,
+            'completed' : self.completed,
+            'note' : self.note,
+        }
+

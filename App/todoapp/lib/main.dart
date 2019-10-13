@@ -40,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: getApiKey(),
+        future: signinUser(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           String apiKey = "";
           if (snapshot.hasData) {
@@ -61,8 +61,19 @@ void login() {
   });
 }
 
+Future signinUser() async {
+  String userName = "";
+  String apiKey = await getApiKey();
+  if (apiKey.length > 0) {
+    bloc.signinUser("", "", apiKey);
+  } else {
+    print("No api key");
+  }
+  return apiKey;
+}
+
 Future getApiKey() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance(); 
     return await prefs.getString("API_Token");
  }
 

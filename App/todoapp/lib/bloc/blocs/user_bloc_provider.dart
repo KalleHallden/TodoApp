@@ -13,8 +13,8 @@ class UserBloc {
     _userGetter.sink.add(user);
   }
 
-  signinUser(String username, String password) async {
-    User user = await _repository.signinUser(username, password);
+  signinUser(String username, String password, String apiKey) async {
+    User user = await _repository.signinUser(username, password, apiKey);
     _userGetter.sink.add(user);
   }
 
