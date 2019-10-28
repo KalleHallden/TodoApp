@@ -10,5 +10,8 @@ class Repository {
 
   Future signinUser(String username, String password, String apiKey) 
     => apiProvider.signinUser(username, password, apiKey);
+  
+  Future getUserTasks(String apiKey) 
+    => apiProvider.getUserTasks(apiKey);
 
 }

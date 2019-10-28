@@ -1,48 +1,63 @@
 import 'package:flutter/material.dart';
+import 'package:todoapp/bloc/blocs/user_bloc_provider.dart';
 import 'package:todoapp/models/classes/task.dart';
 import 'package:todoapp/models/global.dart';
 import 'package:todoapp/models/widgets/intray_todo_widget.dart';
 
 class IntrayPage extends StatefulWidget {
+  final String apiKey;
+  IntrayPage({this.apiKey});
   @override
   _IntrayPageState createState() => _IntrayPageState();
 }
 
 class _IntrayPageState extends State<IntrayPage> {
   List<Task> taskList = [];
+
+  @override
+  void dispose() {
+    tasksBloc.dispose(); // call the dispose method to close our StreamController
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
-    taskList = getList();
     return Container(
-      color: darkGreyColor,
-      child: _buildReorderableListSimple(context),
-      // child: ReorderableListView(
-      //   padding: EdgeInsets.only(top: 300),
-      //   children: todoItems,
-      //   onReorder: _onReorder,
-      // ),
-    );
+        color: darkGreyColor,
+        child: StreamBuilder( // Wrap our widget with a StreamBuilder
+          stream: tasksBloc.getUserTasks(widget.apiKey), // pass our Stream getter here
+          initialData: 0, // provide an initial data
+            builder: (context, snapshot) {
+              print("\n\n\n\nDATA: " + snapshot.data.toString());
+              return _buildReorderableListSimple(context, taskList);
+            }, // access the data in our Stream here
+        )
+        // child: ReorderableListView(∆
+        //   padding: EdgeInsets.only(top: 300),
+        //   children: todoItems,
+        //   onReorder: _onReorder,
+        // ),
+        );
   }
 
   Widget _buildListTile(BuildContext context, Task item) {
     return ListTile(
-      key: Key(item.taskId),
+      key: Key(item.taskId.toString()),
       title: IntrayTodo(
         title: item.title,
       ),
     );
   }
 
-  Widget _buildReorderableListSimple(BuildContext context) {
+  Widget _buildReorderableListSimple(
+    BuildContext context, List<Task> taskList) {
     return Theme(
-          data: ThemeData(
-            canvasColor: Colors.transparent
-          ),
-          child: ReorderableListView(
+      data: ThemeData(canvasColor: Colors.transparent),
+      child: ReorderableListView(
         // handleSide: ReorderableListSimpleSide.Right,
         // handleIcon: Icon(Icons.access_alarm),
         padding: EdgeInsets.only(top: 300.0),
-        children: taskList.map((Task item) => _buildListTile(context, item)).toList(),
+        children:
+            taskList.map((Task item) => _buildListTile(context, item)).toList(),
         onReorder: (oldIndex, newIndex) {
           setState(() {
             Task item = taskList[oldIndex];
@@ -64,11 +79,8 @@ class _IntrayPageState extends State<IntrayPage> {
     });
   }
 
-  List<Task> getList() {
-    for (int i = 0; i < 10; i++) {
-      taskList.add(Task("My first todo " + i.toString(), false, i.toString()));
-    }
-    return taskList;
+  Future<List<Task>> getList() async {
+    List<Task> tasks = await tasksBloc.getUserTasks(widget.apiKey);
+    return tasks;
   }
-
 }
