@@ -13,10 +13,14 @@ class IntrayPage extends StatefulWidget {
 
 class _IntrayPageState extends State<IntrayPage> {
   List<Task> taskList = [];
+  TaskBloc tasksBloc;
 
   @override
+  void initState() {
+    tasksBloc = TaskBloc(widget.apiKey);
+  }
+  @override
   void dispose() {
-    tasksBloc.dispose(); // call the dispose method to close our StreamController
     super.dispose();
   }
   @override
@@ -24,10 +28,9 @@ class _IntrayPageState extends State<IntrayPage> {
     return Container(
         color: darkGreyColor,
         child: StreamBuilder( // Wrap our widget with a StreamBuilder
-          stream: tasksBloc.getUserTasks(widget.apiKey), // pass our Stream getter here
-          initialData: 0, // provide an initial data
+          stream: tasksBloc.getTasks, // pass our Stream getter here
+          initialData: [], // provide an initial data
             builder: (context, snapshot) {
-              print("\n\n\n\nDATA: " + snapshot.data.toString());
               return _buildReorderableListSimple(context, taskList);
             }, // access the data in our Stream here
         )
@@ -79,8 +82,8 @@ class _IntrayPageState extends State<IntrayPage> {
     });
   }
 
-  Future<List<Task>> getList() async {
-    List<Task> tasks = await tasksBloc.getUserTasks(widget.apiKey);
-    return tasks;
-  }
+  // Future<List<Task>> getList() async {
+  //   List<Task> tasks = await tasksBloc.getUserTasks(widget.apiKey);
+  //   return tasks;
+  // }
 }

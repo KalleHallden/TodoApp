@@ -27,19 +27,24 @@ class UserBloc {
 
 class TaskBloc {
   final _repository = Repository();
-  final _taskGetter = PublishSubject<List<Task>>();
+  final _taskSubject = BehaviorSubject<List<Task>>();
+  String apiKey;
 
-  Observable<List<Task>> get getTasks => _taskGetter.stream;
+  var _tasks = <Task>[];
 
-  getUserTasks(String apiKey) async {
-    List<Task> tasks = await _repository.getUserTasks(apiKey);
-    _taskGetter.sink.add(tasks);
+  TaskBloc(String api_key) {
+    this.apiKey = api_key;
+    _updateTasks(api_key).then((_) {
+      _taskSubject.add(_tasks);
+    });
   }
 
-  dispose() {
-    _taskGetter.close();
+
+  Stream<List<Task>> get getTasks => _taskSubject.stream;
+
+  Future<List<Task>> _updateTasks(String apiKey) async {
+    return await _repository.getUserTasks(apiKey);
   }
 
 }
-final tasksBloc = TaskBloc();
 final userBloc = UserBloc();
