@@ -76,6 +76,9 @@ class ApiProvider {
           print(Exception);
         }
       }
+      for (Task task in tasks) {
+        print(task.taskId);
+      }
       return tasks;
     } else {
       // If that call was not successful, throw an error.
