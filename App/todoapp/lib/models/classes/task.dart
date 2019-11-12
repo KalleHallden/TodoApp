@@ -23,5 +23,4 @@ class Task {
       parsedJson['note'],
       );
   }
-
 }

@@ -26,6 +26,20 @@ TextStyle darkTodoTitle = new TextStyle(
   fontSize: 30
 );
 
+TextStyle whiteTitle = new TextStyle(
+  fontFamily: 'Avenir', 
+  fontWeight: FontWeight.bold, 
+  color: Colors.white, 
+  fontSize: 20
+);
+
+
+TextStyle whiteButtonTitle = new TextStyle(
+  fontFamily: 'Avenir', 
+  fontWeight: FontWeight.bold, 
+  color: Colors.white, 
+  fontSize: 15
+);
 TextStyle redTodoTitle = new TextStyle(
   fontFamily: 'Avenir', 
   fontWeight: FontWeight.bold, 
