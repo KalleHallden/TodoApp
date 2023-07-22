@@ -2,7 +2,7 @@ flask==0.12.2
 flask_restful==0.3.6
 flask_script==2.0.6
 flask_migrate==2.1.1
-marshmallow==2.14.0
+marshmallow==2.15.1
 flask_sqlalchemy==2.3.2
 flask_marshmallow==0.8.0
 marshmallow-sqlalchemy==0.13.2
